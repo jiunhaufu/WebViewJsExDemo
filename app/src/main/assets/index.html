@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>ERROR PAGE</title>
+    <style type="text/css">
+			*{
+				font-family:'Roboto', '微軟正黑體','cwTeXHei', serif;
+			}
+			body{
+				background-color: #ccc
+			}
+			.center{
+				<!--position:absolute;-->
+				<!--left:50%;-->
+				<!--top: 45%;-->
+				<!--text-align: center;-->
+				<!--transform:translate(-50%,0);-->
+			}
+		</style>
+</head>
+<body>
+<h3 class="center" onclick="Mobile.callByJavascript()">
+    呼叫Android方法<br>
+</h3>
+<h3 class="center" onclick="callByJavascript2()">
+    呼叫Android方法2<br>
+</h3>
+<script>
+    function callByJavascript2(){
+        var callback = Mobile.callByJavascript2('web');
+        alert(callback);
+    }
+
+    function callJs(){
+        confirm('收到Android呼叫')
+    }
+
+    function callJs2(text){
+        var question = prompt(text, "1");
+        switch(question) {
+            case "1":
+                return '你選擇了1';
+                break;
+            case "2":
+                return '你選擇了2';
+                break;
+            case "3":
+                return '你選擇了3';
+                break;
+            default:
+                return '你選擇了其他';
+        }
+    }
+</script>
+</body>
+</html>
