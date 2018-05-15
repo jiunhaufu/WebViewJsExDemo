@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             WebView.setWebContentsDebuggingEnabled(true); //使用瀏覽器看console => chrome://inspect/
         }
         if (isConnected()){
-            webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);//有網路連線重載
+            webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);//有網路連線重載 LOAD_NO_CACHE 也可
         }else{
             webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);//沒有網路連線載入快取
             Toast.makeText(MainActivity.this,"網路連線失敗",Toast.LENGTH_LONG).show();
@@ -137,6 +137,38 @@ public class MainActivity extends AppCompatActivity {
                 //callJs();
                 callJs2("請輸入1-3");
                 super.onPageFinished(view, url);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("mailto:")) {
+                    //Handle mail Urls
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url)));
+                } else if (url.startsWith("tel:")) {
+                    //Handle telephony Urls
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(url)));
+                } else {
+                    view.loadUrl(url);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                    final Uri uri = request.getUrl();
+                    if (uri.toString().startsWith("mailto:")) {
+                        //Handle mail Urls
+                        startActivity(new Intent(Intent.ACTION_SENDTO, uri));
+                    } else if (uri.toString().startsWith("tel:")) {
+                        //Handle telephony Urls
+                        startActivity(new Intent(Intent.ACTION_DIAL, uri));
+                    } else {
+                        //Handle Web Urls
+                        view.loadUrl(uri.toString());
+                    }
+                }
+                return true;
             }
         });
         webView.setWebChromeClient(new WebChromeClient(){
